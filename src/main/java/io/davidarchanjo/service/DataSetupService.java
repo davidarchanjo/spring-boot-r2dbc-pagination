@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 @Service
 public class DataSetupService implements CommandLineRunner {
 
-    @Value("classpath:init.sql")
+    @Value("classpath:init-postgres.sql")
     private Resource initSql;
     
     @Autowired

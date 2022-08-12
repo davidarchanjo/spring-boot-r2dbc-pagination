@@ -1,4 +1,4 @@
-# spring-r2dbc-pagination
+# spring-boot-r2dbc-pagination
 Spring Data R2DBC pagination demo project
 
 # REQUIREMENT
