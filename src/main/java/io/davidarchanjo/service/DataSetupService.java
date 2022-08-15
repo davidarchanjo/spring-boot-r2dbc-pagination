@@ -3,8 +3,7 @@ package io.davidarchanjo.service;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.Resource;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
@@ -12,20 +11,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 
 import io.davidarchanjo.model.entity.Product;
-
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class DataSetupService implements CommandLineRunner {
 
-    @Value("classpath:init-postgres.sql")
-    private Resource initSql;
-    
-    @Autowired
-    private R2dbcEntityTemplate entityTemplate;
+    private final Resource initSql;
+    private final R2dbcEntityTemplate entityTemplate;
 
     @Override
     public void run(String... args) throws Exception {

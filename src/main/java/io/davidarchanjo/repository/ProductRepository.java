@@ -10,8 +10,7 @@ import reactor.core.publisher.Flux;
 
 @Repository
 public interface ProductRepository extends ReactiveSortingRepository<Product, Integer> {
-    Flux<Product> findAll(Pageable pageable);
-
-    @Query("SELECT * FROM product WHERE id < 3")
-    Flux<Product> findAll2(Pageable pageable);
+    // Spring Data R2DBC provides support to work with native query and pagination
+    @Query("SELECT * FROM product WHERE id < 2")
+    Flux<Product> findAllBy(Pageable pageable);
 }

@@ -18,7 +18,7 @@ public class ProductService {
     private final ProductRepository repository;
 
     public Mono<Page<Product>> getProducts(PageRequest pageRequest) {
-        return this.repository.findAll(pageRequest/* .withSort(org.springframework.data.domain.Sort.by("price").descending()) */)
+        return this.repository.findAllBy(pageRequest/* .withSort(org.springframework.data.domain.Sort.by("price").descending()) */)
             .collectList()
             .zipWith(this.repository.count())
             .map(t -> new PageImpl<>(t.getT1(), pageRequest, t.getT2()));
