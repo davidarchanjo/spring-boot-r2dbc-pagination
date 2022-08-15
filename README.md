@@ -1,6 +1,6 @@
 ![banner](./assets/banner.jpg)
 # PREFACE
-This Spring Data R2DBC demo project shows how to implement data pagination by leveraging the usefullness of reactive and non-blocking connection. To apply pagination over a result from a method present in a repository we use the [Pageable](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Pageable.html) interface as an argument to the method.
+This Spring Data R2DBC demo project shows how to implement data pagination by leveraging the usefullness of reactive and non-blocking connection for databases. To apply pagination over a result from a method present in a repository we use the [Pageable](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Pageable.html) interface as an argument to the method.
 
 <br>
 
