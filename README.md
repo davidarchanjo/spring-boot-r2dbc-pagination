@@ -45,6 +45,63 @@ $ ./mvnw spring-boot:run -Dspring-boot.run.profiles=postgres
 ```bash
 $ curl -X GET http://localhost:8080/product?page=0&size=5
 ```
+You should get an output like this:
+```json
+{
+  "content": [
+    {
+      "id": 6,
+      "price": 644,
+      "description": "product - 6"
+    },
+    {
+      "id": 7,
+      "price": 924,
+      "description": "product - 7"
+    },
+    {
+      "id": 8,
+      "price": 107,
+      "description": "product - 8"
+    },
+    {
+      "id": 9,
+      "price": 564,
+      "description": "product - 9"
+    },
+    {
+      "id": 10,
+      "price": 616,
+      "description": "product - 10"
+    }
+  ],
+  "pageable": {
+    "sort": {
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
+    },
+    "offset": 5,
+    "pageNumber": 1,
+    "pageSize": 5,
+    "paged": true,
+    "unpaged": false
+  },
+  "totalPages": 20,
+  "totalElements": 100,
+  "last": false,
+  "size": 5,
+  "number": 1,
+  "sort": {
+    "empty": true,
+    "sorted": false,
+    "unsorted": true
+  },
+  "numberOfElements": 5,
+  "first": false,
+  "empty": false
+}
+```
 
 <br>
 
@@ -62,4 +119,6 @@ var result = fluxData.buffer(pageRequest.getPageSize(), (pageRequest.getPageNumb
     .map(t -> new PageImpl<>(t, pageRequest, t.size()));
 ```
 I had to implement in the demo this approach because as of this writing, _the pagination mechanism of Spring Data R2DBC implementation does not work along with native query_. FYI we can use [@Query](https://docs.spring.io/spring-data/r2dbc/docs/current/api/org/springframework/data/r2dbc/repository/Query.html) annotation to specify a SQL statement that will get used when the annotated method gets invoked. <br>
-You can check how I did on the method [getAllProducts](./src/main/java/io/davidarchanjo/service/ProductService.java#L22).
+You can check how I did on the method [getAllProducts](./src/main/java/io/davidarchanjo/service/ProductService.java#L22). 
+
+To validate this approach, issue a request to `curl -X GET 'http://localhost:8080/api/products/nativeQuery?page=0&size=5'` and you should get the same output as exemplified above.
