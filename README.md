@@ -112,13 +112,18 @@ If you need to paginate manually a sequence of data, in reactive programming ref
 ```java
 var pageRequest = PageRequest.of(page, size);
 var fluxData = methodReturningDataAsFlux(pageable);
-var result = fluxData.buffer(pageRequest.getPageSize(), (pageRequest.getPageNumber() + 1))
+var result = fluxData
+    .buffer(pageRequest.getPageSize(), (pageRequest.getPageNumber() + 1))
     .elementAt(pageRequest.getPageNumber(), new ArrayList<>())
     .flatMapMany(Flux::fromIterable)
     .collectList()
-    .map(t -> new PageImpl<>(t, pageRequest, t.size()));
+    .map(t -> new PageImpl<>(t, pageRequest, t.size())); // This wrapping is optional
 ```
 I had to implement in the demo this approach because as of this writing, _the pagination mechanism of Spring Data R2DBC implementation does not work along with native query_. FYI we can use [@Query](https://docs.spring.io/spring-data/r2dbc/docs/current/api/org/springframework/data/r2dbc/repository/Query.html) annotation to specify a SQL statement that will get used when the annotated method gets invoked. <br>
 You can check how I did on the method [getAllProducts](./src/main/java/io/davidarchanjo/service/ProductService.java#L22). 
 
-To validate this approach, issue a request to `curl -X GET 'http://localhost:8080/api/products/nativeQuery?page=0&size=5'` and you should get the same output as exemplified above.
+To validate this approach, issue a request as: 
+```bash
+curl -X GET 'http://localhost:8080/api/products/nativeQuery?page=0&size=5'
+``` 
+You should get the same output as exemplified above.
