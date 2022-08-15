@@ -108,7 +108,7 @@ You should get an output like this:
 
 # BONUS
 ## How to paginate in a reactive way
-If you need to paginate manually a sequence of data, in reactive programming referenced by a [Flux](https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html) instance, you can do as follows:
+If you need to paginate manually a sequence or stream of data, in reactive programming referenced by a [Flux](https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html) instance, you can do as follows:
 ```java
 var pageRequest = PageRequest.of(page, size);
 var fluxData = methodReturningDataAsFlux(pageable);
