@@ -1,11 +1,11 @@
 ![banner](./assets/banner.jpg)
 # PREFACE
-This Spring Data R2DBC demo project shows how to implement data paging by leveraging the usefullness of reactive and non-blocking connection.
+This Spring Data R2DBC demo project shows how to implement data pagination by leveraging the usefullness of reactive and non-blocking connection. To apply pagination over a result from a method present in a repository we use the [Pageable](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Pageable.html) interface as an argument to the method.
 
 <br>
 
 # REQUIREMENT
-- Java 15+
+- Java 11+
 - Docker (optional)
 
 <br>
@@ -20,7 +20,6 @@ From the above execution, we are using as the source database the [H2 database](
 <dependency>
     <groupId>io.r2dbc</groupId>
     <artifactId>r2dbc-postgresql</artifactId>
-    <version>0.8.12.RELEASE</version>
     <scope>runtime</scope>
 </dependency>
 ```
@@ -31,7 +30,6 @@ docker run --rm -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:14-alpine -d
 With the PostgreSQL instance up and running, you can update the [application-postgres.properties](./src/main/resources/application-postgres.properties) as follows:
 ```properties
 spring.r2dbc.url=r2dbc:postgresql://localhost:5432/postgres
-spring.r2dbc.schema=public
 spring.r2dbc.username=postgres
 spring.r2dbc.password=postgres
 ```
@@ -50,6 +48,18 @@ $ curl -X GET http://localhost:8080/product?page=0&size=5
 
 <br>
 
-## FOOTNOTES
-- The Spring Data R2DBC implementation provides support to work with native query combined with pagination.
-- The Spring Data R2DBC implementation does not map classes to database tables in the way is done on Spring Data JDBC, which uses Hibernate under the hood. Although the concept of _entity_ is applied, the "mapping engine" does not work declaratively in the way we are used to do with Hibernate/JPA, by making use of the @Entity annotation.
+
+# BONUS
+## How to paginate in a reactive way
+If you need to paginate manually a sequence of data, in reactive programming referenced by a [Flux](https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html) instance, you can do as follows:
+```java
+var pageRequest = PageRequest.of(page, size);
+var fluxData = methodReturningDataAsFlux(pageable);
+var result = fluxData.buffer(pageRequest.getPageSize(), (pageRequest.getPageNumber() + 1))
+    .elementAt(pageRequest.getPageNumber(), new ArrayList<>())
+    .flatMapMany(Flux::fromIterable)
+    .collectList()
+    .map(t -> new PageImpl<>(t, pageRequest, t.size()));
+```
+I had to implement in the demo this approach because as of this writing, _the pagination mechanism of Spring Data R2DBC implementation does not work along with native query_. FYI we can use [@Query](https://docs.spring.io/spring-data/r2dbc/docs/current/api/org/springframework/data/r2dbc/repository/Query.html) annotation to specify a SQL statement that will get used when the annotated method gets invoked. <br>
+You can check how I did on the method [getAllProducts](./src/main/java/io/davidarchanjo/service/ProductService.java#L22).
