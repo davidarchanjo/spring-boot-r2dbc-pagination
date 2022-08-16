@@ -43,7 +43,7 @@ $ ./mvnw spring-boot:run -Dspring-boot.run.profiles=postgres
 
 ## Request data with pagination
 ```bash
-$ curl -X GET http://localhost:8080/product?page=0&size=5
+$ curl -X GET http://localhost:8080/api/products?page=0&size=5
 ```
 You should get an output like this:
 ```json
