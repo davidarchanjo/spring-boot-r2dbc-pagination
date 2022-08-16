@@ -12,10 +12,18 @@ This Spring Data R2DBC demo project shows how to implement data pagination by le
 
 # HOW TO TEST
 ## Boot up the application
+To launch the application run the command as follows (pick only one option, not both):
+- Maven
 ```bash
 $ ./mvnw spring-boot:run
 ```
-From the above execution, we are using the [H2 database](https://www.h2database.com/html/main.html) as the source database, which is a memory database engine. If you want to test the application with a physical database like PostgreSQL you simply need to go to the [pom.xml](./pom.xml) and replace the r2dbc's H2 dependency by:
+- Gradle
+```bash
+$ ./gradlew bootRun
+```
+
+From the above execution, we are using the [H2 database](https://www.h2database.com/html/main.html) as the source database, which is a memory database engine. If you want to test the application with a physical database like PostgreSQL you simply need replace the r2dbc's H2 dependency as follows:
+- Maven ([pom.xml](./pom.xml))
 ```xml
 <dependency>
     <groupId>io.r2dbc</groupId>
@@ -23,6 +31,11 @@ From the above execution, we are using the [H2 database](https://www.h2database.
     <scope>runtime</scope>
 </dependency>
 ```
+- Gradle ([build.gradle](./build.gradle))
+```gradle
+runtimeOnly "io.r2dbc:r2dbc-postgresql:0.8.12.RELEASE"
+```
+
 And then update [application-postgres.properties](./src/main/resources/application-postgres.properties) with the connection details for the PostgreSQL instance (`url`, `username`, `password`). For example, you can use the following docker command to spin up a PostgreSQL instance locally:
 ```bash
 docker run --rm -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:14-alpine -d postgres
@@ -34,9 +47,14 @@ spring.r2dbc.username=postgres
 spring.r2dbc.password=postgres
 ```
 
-After all those steps, you can start the application as follows:
+After all those steps are complete, you can re-start the application as follows (pick only one option, not both):
+- Maven
 ```bash
 $ ./mvnw spring-boot:run -Dspring-boot.run.profiles=postgres
+```
+- Gradle
+```bash
+./gradlew bootRun --args='--spring.profiles.active=postgres'
 ```
 
 <br>
