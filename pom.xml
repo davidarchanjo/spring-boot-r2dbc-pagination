@@ -4,14 +4,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.1</version>
+		<version>2.7.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>io.davidarchanjo</groupId>
-	<artifactId>spring-boot-r2dbc-pagination</artifactId>
+	<artifactId>spring-r2dbc-pagination</artifactId>
 	<version>0.1.0</version>
-	<name>r2dbc-pagination</name>
+	<name>spring-r2dbc-pagination</name>
 	<description>Spring Data R2DBC pagination demo project</description>
 
 	<properties>
@@ -57,6 +57,29 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.1.0</version>
+				<executions>
+					<execution>
+						<id>set-additional-system-properties</id>
+						<goals>
+							<goal>set-system-properties</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<properties>
+						<property>
+							<name>spring.output.ansi.enabled</name>
+							<value>ALWAYS</value>
+						</property>
+					</properties>
+					<outputFile />
 				</configuration>
 			</plugin>
 		</plugins>
