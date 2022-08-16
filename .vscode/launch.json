@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "spring-boot-r2dbc-pagination",
+            "request": "launch",
+            "mainClass": "io.davidarchanjo.R2dbcPaginationApplication",
+            "projectName": "spring-boot-r2dbc-pagination",
+            // "vmArgs": "-Dspring.profiles.active=postgres"
+        }
+    ]
+}
